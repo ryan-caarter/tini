@@ -6,6 +6,7 @@ import spotipy
 import string
 from spotipy.oauth2 import SpotifyClientCredentials
 
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -16,6 +17,24 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+def get_youtube_api():
+    #keys = ["<key1>", "<key2>", "<etc>"]
+    invalid_key = True
+    i = 0
+    print("getting valid api key..")
+    while invalid_key:
+        try:
+            youtube_api = Api(api_key=keys[i])
+            search = youtube_api.search_by_keywords(q="", search_type=["video"], count=1, limit=1)
+            print(bcolors.OKGREEN + keys[i]+ " hasn't hit it's daily call limit yet :)" + bcolors.ENDC)
+            return youtube_api
+        except:
+            print(bcolors.FAIL +keys[i] + " hit it's daily call limit :(" + bcolors.ENDC)
+            i+=1
+            if i == len(keys):
+                return
+api = get_youtube_api()
 
 def get_all_playlists(username):
     all_playlist_track_names = []
@@ -68,24 +87,7 @@ def download_ytvid_as_mp3(video_url, track, download_location):
         ydl.download([video_info['webpage_url']])
     print("Download complete... {}".format(filename))
 
-def download(track_names, download_location, is_search = False):
-    keys = ["<key1>", "<key2>", "<etc>"]
-    api = Api(api_key=keys[0])
-    invalid_key = True
-    i = 0
-    print("getting valid api key..")
-    while invalid_key:
-        try:
-            api = Api(api_key=keys[i])
-            search = api.search_by_keywords(q="", search_type=["video"], count=1, limit=1)
-            print(bcolors.OKGREEN + keys[i]+ " hasn't hit it's daily call limit yet :)" + bcolors.ENDC)
-            invalid_key = False
-        except:
-            print(bcolors.FAIL +keys[i] + " hit it's daily call limit :(" + bcolors.ENDC)
-            i+=1
-            if i == len(keys):
-                return
-
+def download(track_names, download_location, api, is_search = False,):
     for track in track_names:
         search_query = ""
         count_limit = 1
@@ -107,9 +109,6 @@ def download(track_names, download_location, is_search = False):
                 print(message)
                 print(exc_info)
 
-# playlist = 'https://open.spotify.com/playlist/4xaSTfDH1oyfqFRmNKEFUf?si=1TAJ8NOwQfiKyq2oafTqXA'
-# username = 'ryan.carter.ay'
-
 sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
 
 layout = [  [sg.Text('Search for a single song like this, with a colon in the middle <song-name>:<artist>:'), sg.InputText(key='search')],
@@ -120,29 +119,27 @@ layout = [  [sg.Text('Search for a single song like this, with a colon in the mi
             [sg.Text('', key='result_label')]]
 
 
-window = sg.Window('Tini', layout).Finalize()
+window = sg.Window('TINI', layout).Finalize()
 window.Maximize()
 
 while True:
     event, values = window.read()
     if event in (None, 'Download'):
         download_location = values['download_location'] if values['download_location'] != "" else '.'
-        #values['url'] = 'https://open.spotify.com/playlist/4xaSTfDH1oyfqFRmNKEFUf?si=1TAJ8NOwQfiKyq2oafTqXA'
         if values['url'] != "":
-            #window['result_label'].update("Downloading all tracks on that playlist. Please wait..")
             print('Downloading all tracks on that playlist. Please wait..')
             track_names = get_one_playlist(values['url'])
-            download(track_names, download_location)
+            download(track_names, download_location, api)
             break
         elif values['username'] != "":
             print('Downloading all playlists by that user. Please wait..')
             track_names = get_all_playlists(values['username'])
-            download(track_names, download_location)
+            download(track_names, download_location, api)
             break
         elif values['search'] != "":
             print('Downloading the song based on a search. Please wait..')
             track_names = [values['search'].split(":")]
-            download(track_names, download_location, True)
+            download(track_names, download_location, api, True)
             break
 
 window.close()
