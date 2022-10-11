@@ -6,6 +6,7 @@ Downloads songs from youtube based on search, Spotify playlist URL, or all playl
 4. Search for "YouTube Data API v3" and enable it
 5. Search for "Credentials"
 6. Create Credentials -> API key
-7. Copy the key, replace line 23's "<API key>" with the key
+7. Copy the key, replace line 23 with the key
 8. Run
+
 There is an upper limit of (30,000?) daily calls you can make on free keys
