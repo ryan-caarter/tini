@@ -19,6 +19,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def get_youtube_api():
+    keys = ['AIzaSyCdz8nt6AcSFb_wKwtqIQvn213-uGxvwmM']#'AIzaSyDxqg_HAChixK8D1Z-YBGW-9T7MbXyttIo', 'AIzaSyCuxbIeHbltns2KJSAh-x_PN-HyBcw0xX4', 'AIzaSyCD9KPX9ahqgRMCgi8l0KZE5MOELwpodk4', 'AIzaSyDk6md1mOYxZPbmWfz_7P1daGOo6-8qk44', 'AIzaSyBcDdYe12LIAF0TYOAVVOmfxCx5wsW2FjM']
     #keys = ["<key1>", "<key2>", "<etc>"]
     invalid_key = True
     i = 0
