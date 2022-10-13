@@ -144,11 +144,11 @@ while True:
                 track_names = get_one_playlist(values['url'])
                 download(track_names, download_location, youtube_api)
             elif values['username'] != "":
-                print('Downloading all playlists by that user. Please wait..')
+                print(Colors.BLUE + 'Downloading all playlists by that user. Please wait..' + Colors.END)
                 track_names = get_all_playlists(values['username'])
                 download(track_names, download_location, youtube_api)
             elif values['search'] != "":
-                print('Downloading the song based on a search. Please wait..')
+                print(Colors.BLUE + 'Downloading the song based on a search. Please wait..' + Colors.END)
                 track_names = [values['search'].split(":")]
                 download(track_names, download_location, youtube_api, True)
         except Exception as e:
