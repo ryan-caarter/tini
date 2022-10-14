@@ -1,4 +1,4 @@
-Downloads songs from youtube based on search, Spotify playlist URL, or all playlists under a Spotify username
+PYSimpleGUI for downloading MP3 files from YouTube based on a search, Spotify playlist URL, or all playlists under a Spotify username
 
 1. Open Google Cloud Console: https://console.cloud.google.com/
 2. Make a new project, call it whatever
